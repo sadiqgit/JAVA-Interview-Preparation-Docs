@@ -1,0 +1,24 @@
+-- Stack implementation
+-- Towers of hanaoi
+-- Fibonacci Series" program on a collaborative text editor using loop as well as recursion.
+-- Stack implementation
+-- Binary search tree
+-- Anagrams of list of strings
+-- right view of binary tree
+- Given Binary tree. Find whether its BST
+-- find a number between 1 and 100, that generates longest series using following rules:
+if n is odd, next n = 3n + 1
+if n is even, next n = n/2
+if n == 1, terminate
+
+-- sql on nth highest salary
+-- There is an array [1,2,5,4,8,3] and sum = 7. Fnd all the sub set array such that sum of elements is 7
+
+-- Convert sorted array to balanced binary search tree.
+-- 25 horses puzzle.
+-- four people on bridge puzzle
+-- KMP algorithm
+-- delete duplicate elements without using aggregate function
+-- Implement queue using stack.
+--  Implement stack using queue and optimize push and pop of both.
+-- 

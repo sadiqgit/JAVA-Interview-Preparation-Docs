@@ -1,0 +1,249 @@
+﻿-- Have used multithreading in your projects?
+  -- Yes. We have used multithreading for file processing, which is data divided in chunks
+      and get it processed in multiple threads. Example:(Spring Batch).
+-------------------------------------------------------------------------------------------------------------
+-- Why we use multithreading?
+  -- We use multithreading because threads share common memory area. And context-switching between the threads
+     takes less time than process.
+Example : Games, animations, junits framework to excecute test cases parallely.
+--------------------------------------------------------------------------------------------------------------
+-- How do you implement thread in java
+  -- Thread can be implemented in two ways, by extending thread class or by implementing runnable interface.
+  -- // extending thread class
+    public class MyThread extends Thread {
+	 public void run(){
+	 sop("Thread running " + Thread.currentThread().getName());
+	 }
+  -- // Implementing runnable interface
+    public class MyRunnable implements Runnable{
+	  public void run () {
+	  sop("Thread running " + Thread.currentThread().getName());
+	 }
+  -- // starting thread in java
+       // Create new object of thread and then call start method
+	 Thread myThread = new MyThread();
+	 myThread.start(); 
+	 myThread.setName("T1");
+	  // using runnable
+	  Thread myRunnable = new Thread( new MyRunnable(),"T2");
+	  myRunnable.start();
+-- It’s not guaranteed that thread mythread will start before thread myrunnable it depends upon Thread scheduler.
+-------------------------------------------------------------------------------------------------------------------
+-- What will happen if we call run method of thread without calling start?
+  -- No exception or error will occur, it's simply run method is executed on same thread.
+------------------------------------------------------------------------------------------------------------------
+-- What will hapeen if we call start method two times in thread?
+ -- Second start method on thread will throw IllegalThreadStateException.
+--------------------------------------------------------------------------------------------------------------------
+-- When to use runnable vs thread in java?
+  -- If you want to extends any class then implement runnable , as multiple inheritance is not possible in java
+--------------------------------------------------------------------------------------------------------------------
+-- what is the difference between start and run methods in threads?
+ -- when call start method of thread, then JVM internally calls run method of thread. 
+ -- When we call run method of thread, then no new thread not created, it will call run method of same thread.
+ -- If we call start method two times , Second start method on thread will throw IllegalThreadStateException.
+------------------------------------------------------------------------------------------------------------------
+-- Callable vs Runnable interface in Java
+1) The Runnable interface is older than Callable, there from JDK 1.0, while Callable is added on Java 5.0.
+2) Runnable interface has run() method to define task while Callable interface uses call() method for task definition.
+3) run() method does not return any value, it's return type is void while call method returns value. The Callable 
+interface is a generic parameterized interface and Type of value is provided when an instance of Callable 
+implementation is created.
+4) Another difference on run and call method is that run method can not throw checked 
+exception while call method can throw checked exception in Java.
+---------------------------------------------------------------------------------------------------------------------
+-- What is volatile variable in java?
+ -- Volatile variable is used in multi threaded envinornment, as many threads access on instance variables, then
+    using volatile modifier on instances variables, guarantees that changes made by one thread should be visible 
+	to other threads.
+---------------------------------------------------------------------------------------------------------------------
+-- What is race condition in Java? Given one example? 
+ -- Race condition occurs in java, due to improper implementation of synchronization, when two or more threads
+    access on same object.
+ -- read-modify-update race conditions:
+    if(!hashMap.contains(key)){
+	hashMap.put(key,value);
+	}
+-- In above code contain and put are atomic. But together is not atomic. 
+-- Consider that thread T1 checks the condition and enters inside loop,and now CPU switched T1 to T2 
+   which also checks condition and also enter loop, now race condition will occur both threads are
+   inside loop either T1 overwrites T2 value or T2 overwrites T1 value, based on CPU scheduling.
+   Inorder to avoid this, above code should be placed inside synchronized block, so that only one thread 
+   should enter in loop.
+----------------------------------------------------------------------------------------------------------------------
+-- How to stop thread in java?
+ -- Java doesn't have any API to stop thread . As run or call method of method is completed, then thread 
+ automatically stops. If we really want to stop thread programatically then we use volatile boolean variable 
+ inside run method.
+ -- Example:
+   public void MyRunnable implements Runnable {
+    private volatile boolean isRunning = true;
+     
+	 public void run() {
+	 
+	 while (isRunning) {
+         //do work
+		 System.out.println("Thread is running");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ThreadTester.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        }
+    }
+     }
+   }
+
+   public void kill() {
+       isRunning = false;
+   }
+	 
+	 }
+ To stop it just call
+
+task.kill();
+--------------------------------------------------------------------------------------------------------------------
+-- What happens when an Exception occurs in a thread?
+  -- Thread will die if exception is not caught.
+-------------------------------------------------------------------------------------------------------------------
+-- What is the difference between notify and notifyAll?
+ -- Notify makes only one thread to wake up, where as notifyAll wakesup all threads which are waiting .
+  -- but again all woken thread will fight for lock before executing remaining code and that's 
+  why wait is called on loop because if multiple threads are woken up, the thread which 
+  will get lock will first execute and it may reset waiting for condition, which will force
+  subsequent threads to wait.
+-------------------------------------------------------------------------------------------------------------------
+-- When to use notify and notifyAll?
+ -- For example all threads waiting for task to finish, once the task has finished, 
+ all waiting threads can continue with their business. In such a case you would use notifyAll() .
+ -- Use notify() if all your waiting threads are interchangeable (the order they wake up doesn't matter), 
+ or if you only ever have one waiting thread. A common example is a thread pool used to execute jobs 
+ from a queue--when a job is added, one of threads is notified to wake up, execute the next job 
+ and go back to sleep.
+-- Use notifyAll() for other cases where the waiting threads may have different 
+purposes and should be able to run concurrently. An example is a maintenance 
+operation on a shared resource, where multiple threads are waiting for the operation 
+to complete before accessing the resource,to wake up all waiting threads at the same time.
+-----------------------------------------------------------------------------------------------------------------
+-- Why wait, notify and notify all methods are not in thread class?
+  -- wait , notify and notifyAll opearte at lock level, and in java Java provides lock at object level 
+  not at thread level.
+------------------------------------------------------------------------------------------------------------------
+-- What is thread local variable?
+  -- Thread local variable is available per thread. For example SimpleDateFormat is not thread safe , we can
+    make it thread safe by using ThreadLocal.
+	
+ -- private static ThreadLocal<SimpleDateFormat> simpleDateFormat = new ThreadLocal<SimpleDateFormat>(){
+    @override
+	protected SimpleDateFormat initialValue(){
+	return new SimpleDateFormat("YYYY/MM/DD");
+	}
+};
+public String formatDate(String date) {
+  return simpleDateFormat.get().format(date);
+ }
+--------------------------------------------------------------------------------------------------------------------
+-- Why wait and notify method are called from synchronized block?( will throw IllegalMonitorStateException)
+  -- 	
+What is the potential damage if it was possible to invoke wait() outside a synchronized block, retaining
+ it's semantics - suspending the caller thread?
+Let's illustrate what issues we would run into if wait() could be called outside of a synchronized block 
+with a concrete example.
+
+Suppose we were to implement a blocking queue (I know, there is already one in the API :)
+
+A first attempt (without synchronization) could look something along the lines below
+
+class BlockingQueue {
+    Queue<String> buffer = new LinkedList<String>();
+
+    public void give(String data) {
+        buffer.add(data);
+        notify();                   // Since someone may be waiting in take!
+    }
+
+    public String take() throws InterruptedException {
+        while (buffer.isEmpty())    // don't use "if" due to spurious wakeups.
+            wait();
+        return buffer.remove();
+    }
+}
+This is what could potentially happen:
+
+A consumer thread calls take() and sees that the buffer.isEmpty().
+Before the consumer thread goes on to call wait(), a producer thread comes along and invokes a 
+full give(), that is, buffer.add(data); notify();
+The consumer thread will now call wait() (and miss the notify() that was just called).
+If unlucky, the producer thread won't produce more give() as a result of the fact that the consumer 
+thread never wakes up, and we have a dead-lock.
+Once you understand the issue, the solution is obvious: Always perform give/notify and isEmpty/wait atomically.
+
+Without going into details: This synchronization issue is universal. As Michael Borgwardt 
+points out, wait/notify is all about communication between threads, so you'll always end up
+ with a race condition similar to the one described above. This is why the "only wait inside synchronized" 
+ rule is enforced.
+-------------------------------------------------------------------------------------------------------------------
+-- Why wait should be called inside loop?
+ --Java doesn't guranatee that waiting thread can be wake  by notify/notifyAll . There might be other evil threads that can wake up threads 
+    that is Spurious wakeups. So, therefore wait should be called inside loop with condition.
+---------------------------------------------------------------------------------------------------------------------------------------------
+-- Wha t is diffrence between volatile and atomic variable in java?
+ -- Volatile keyword in multi threaded envinornment guarnatess that, if one thread made changes to variable, then it should be visible to all
+   other threads, but  doesn't guarantee atomicity. For example count++ operation will not become atomic just
+   by declaring count variable as volatile. On the other hand AtomicInteger class provides atomic method to perform 
+   such compound operation atomically e.g. getAndIncrement() is atomic replacement of increment operator. It can 
+   be used to atomically increment current value by one. Similarly you have atomic version for other data type and reference variable as well.
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- What happens if a thread throws an Exception inside synchronized block? (answer)
+This is one more tricky question for average Java programmer, if he can bring the fact about whether 
+lock is released or not is a key indicator of his understanding. To answer this question, 
+no matter how you exist synchronized block, either normally by finishing execution or abruptly by throwing exception, 
+thread releases the lock it acquired while entering that synchronized block. This is actually one of the reasons 
+I like synchronized block over lock interface, which requires explicit attention to release lock, generally this
+is achieved by releasing the lock in a finally block.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- List down 3 multi-threading best practice you follow?
+ -- Always give meaningful name to your thread
+ -- Avoid locking or Reduce scope of Synchronization
+ -- Prefer Synchronizers over wait and notify
+ -- Prefer Concurrent Collection over Synchronized Collection
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Difference between sleep and wait?
+1.  Class  belongs :  The wait() method belongs to java.lang.Object class, thus can be called on any Object. The sleep() method belongs to java.lang.Thread class,
+ thus can be called on Threads.
+2. Context :  The wait() method can only be called from Synchronized context i.e. using synchronized block or synchronized method.
+ The sleep() method can be called from any context.
+3. Locking :  The wait() method releases the lock on an object and gives others chance to execute. The sleep() method does not releases the 
+lock of an object for specified time or until interrupt.
+4. Wake up condition :  A waiting thread can be awake by notify() or notifyAll() method. A sleeping can be awaked by interrupt or time expires.
+5. Execution :  Each object has each wait() method for inter-communication between threads. The sleep() method is static method belonging to 
+Thread class. There is a common mistake to write t.sleep(1000) because sleep() is a class method and will pause the current running thread not t.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+--  Difference between sleep, wait and yield?
+We can prevent a thread from execution by using any of the 3 methods of Thread class:
+yield()
+join()
+sleep()
+yield() method pauses the currently executing thread temporarily for giving a chance to the remaining waiting threads of the same priority to execute. 
+If there is no waiting thread or all the waiting threads have a lower priority then the same thread will continue its execution. 
+The yielded thread when it will get the chance for execution is decided by the thread scheduler whose behavior is vendor dependent.
+join() If any executing thread t1 calls join() on t2 i.e; t2.join() immediately t1 will enter into waiting state until t2 completes its execution.
+sleep() Based on our requirement we can make a thread to be in sleeping state for a specified period of time.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1

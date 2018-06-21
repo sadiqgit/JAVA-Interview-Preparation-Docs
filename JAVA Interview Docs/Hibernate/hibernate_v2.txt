@@ -1,0 +1,154 @@
+1. What is Hibernate?
+ -- Hibernate is Object Releational Mapping (ORM) framework, which maps object to database table and columns.
+2. What are the core interfaces of hibernate?
+   a. Configuration
+   b. SessionFactory
+   c. Session
+   d. Query
+   e. Criteria
+   f. Transaction
+3. What is sessionFactory?
+ -- SessionFactory is a factory of sessions. It provides instance of session. 
+    It holds data of secondary level cache that is not enabled by default.
+4. What is a session?
+  -- It maintains connection between hibernate and database.
+  -- It provides methods to store, update, delete or fetch data from the database such as persist(), 
+      update(), delete(), load(), get() etc.
+  -- It is a factory of Query, Criteria and Transaction i.e. it provides factory methods to return these instances.
+5. What is the differenece between save and persist?
+  -- Persist is JPA specification where as save is hibernate specification.
+  -- Return type : persist return type is void where as save return type is seralizable object.
+  -- Outside of transaction  : Persist method doesn't execute insert if it is caleed outside transaction, where as save not guranatee.
+  -- Identifer return : Persist method doesn't guarantee that identifier value is assigned to persistance instance immediately. Where as 
+                        save guarantees.
+6. Difference between get and load?
+  -- When object not found - get returns null if object not found in database, where as load returns ObjectNotFoundException.
+  -- Database hit : Get always hits the DB, while load() method may not always hit the database, depending upon which method is called.
+  -- Proxy : Get method never returns a proxy, it either returns null or fully initialized Object, while load() method may return proxy, 
+			  which is the object with ID but without initializing other properties, which is lazily initialized. 
+			  If you are just using returned object for creating relationship and only need Id then load() is the way to go.
+ -- Performance : load slightly more better performance.
+ -- When to use : If you don't know whether object exists or not , then go for get as it returns null , if you are sure 
+                  object exists then go for load, as it returns ObjectNotFoundException if object not found.
+7. Differenece between merge and update?
+   -- Merge: suppose we create a session and load an object. Now object in session cache. If we close the session at this point 
+           and we edit state of object and tried to save using update() it will throw exception. To make object persistent
+		   we need to open another session. Now we load same object again in current session. So if we want to update present 
+		   object with previous object changes we have to use merge() method. Merge method will merge changes of both states
+		   of object and will save in database. 
+   -- Update: If we are dealing with any object in same session we should use update() or saveOrUpdate() method.
+8. What are the states of object in hibernate?
+ -- Transient: The object is in transient state if it is just created but has no primary key (identifier) and not associated with session.
+-- Persistent: The object is in persistent state if session is open, and you just saved the instance in the database or retrieved 
+               the instance from the database.
+-- Detached: The object is in detached state if session is closed. After detached state, object comes to persistent state 
+            if you call lock() or update() method.
+9. What are the inheritance mapping strategies?
+	 -- Table per hierarchy -- In table per hierarchy mapping, single table is required to map the whole hierarchy, an extra column 
+	     (known as discriminator column) is added to identify the class. But nullable values are stored in the table .
+	-- Table per concrete class : In case of table per concrete class, tables are created as per class. But duplicate column is added in subclass tables.
+	-- Table per subclass: In this strategy, tables are created as per class but related by foreign key. So there are no duplicate columns.
+	
+10. What is automatic dirty checking in hibernate?
+  -- The automatic dirty checking feature of hibernate, calls update statement automatically on the objects that are modified in a transaction.
+11. How many types of association mapping are possible in hibernate?
+    One to One -- 
+	One to Many
+	Many to One
+	Many to Many
+	Ex : @OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "STUDENT_PHONE", joinColumns = { @JoinColumn(name = "STUDENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "PHONE_ID") })
+12.  What is the difference between first level cache and second level cache?
+ -- First Level Cache is associated with Session where as First Level Cache is associated with Session.	Second Level Cache is associated with SessionFactory.
+ -- First Level Cache is enabled by default where as Second Level Cache is not enabled by default.
+13. What is the difference between getCurrentSession() and openSession()?
+  -- Hibernate SessionFactory getCurrentSession() method returns the session bound to the context. 
+  But for this to work, we need to configure it in hibernate configuration file like below.
+  <property name="hibernate.current_session_context_class">thread</property>
+  Since this session object belongs to the hibernate context, we don’t need to close it. Once the session factory is closed, this session object gets closed.
+  Hibernate Session objects are not thread safe, so we should not use it in multi-threaded environment. 
+  We can use it in single threaded environment because it’s relatively faster than opening a new session.
+  -- Hibernate SessionFactory openSession() method always opens a new session. We should close this session object 
+     once we are done with all the database operations.
+ -- However, stateless session can be a good fit in certain situations. 
+    For example where we are loading bulk data into database and we don’t want hibernate session to hold huge data in first-level cache memory.
+14. What will happen if we don’t have no-args constructor in Entity bean?
+  -- Hibernate uses Reflection API to create instance of Entity beans, usually when you call get() or load() methods. 
+  The method Class.newInstance() is used for this and it requires no-args constructor. 
+  So if you won’t have no-args constructor in entity beans, hibernate will fail to instantiate it and you will get HibernateException.
+15. What is difference between sorted collection and ordered collection, which one is better?
+ -- When we use Collection API sorting algorithms to sort a collection, it’s called sorted list. 
+ For small collections, it’s not much of an overhead but for larger collections 
+  it can lead to slow performance and OutOfMemory errors. Also the entity beans should implement Comparable or Comparator
+  interface for it to work, read more at java object list sorting.
+ If we are using Hibernate framework to load collection data from database, we can use it’s Criteria API to
+ use “order by” clause to get ordered list. Below code snippet shows you how to get it.
+
+ List<Employee> empList = session.createCriteria(Employee.class)
+						.addOrder(Order.desc("id")).list();
+ Ordered list is better than sorted list because the actual sorting is done at database level, that is fast and doesn’t cause memory issues.
+16. What are the collection types in Hibernate?
+
+There are five collection types in hibernate used for one-to-many relationship mappings.
+
+Bag
+Set
+List
+Array
+Map
+17. How to implement Joins in Hibernate?
+
+	There are various ways to implement joins in hibernate.
+
+	Using associations such as one-to-one, one-to-many etc.
+	Using JOIN in the HQL query. There is another form “join fetch” to load associated data simultaneously, no lazy loading.
+	We can fire native sql query and use join keyword.
+18. Why we should not make Entity Class final?
+	Hibernate use proxy classes for lazy loading of data, only when it’s needed. This is done by extending the entity bean, 
+	if the entity bean will be final then lazy loading will not be possible, hence low performance.
+19. What are the benefits of Named SQL Query?
+	Hibernate Named Query helps us in grouping queries at a central location rather than letting them scattered all over the code.
+	Hibernate Named Query syntax is checked when the hibernate session factory is created, thus making the application fail fast 
+	in case of any error in the named queries.
+	Hibernate Named Query is global, means once defined it can be used throughout the application.
+	However one of the major disadvantage of Named query is that it’s hard to debug, because we need to find out the location where it’s defined.
+20. What is hibernate criteria API?
+ -- Hibernate provides Criteria API that is more object oriented for querying the database and getting results
+ -- Some of the common usage of Criteria API are:
+	Criteria API provides Projection that we can use for aggregate functions such as sum(), min(), max() etc.
+	Criteria API can be used for fetching results with conditions, useful methods are add() where we can add Restrictions.
+	Criteria API provides addOrder() method that we can use for ordering the results. 
+ -- I mostly prefer Criteria Queries for dynamic queries. For example it is much easier to add some ordering dynamically or 
+	 leave some parts (e.g. restrictions) out depending on some parameter.
+	On the other hand I'm using HQL for static and complex queries, because it's much easier to understand/read HQL. 
+	Also, HQL is a bit more powerful, I think, e.g. for different join types.
+21. one to one mapping :
+  -- for example student has address
+   @OneToOne(cascade = CascadeType.ALL)
+	public Address getStudentAddress() {
+		return this.studentAddress;
+	}
+	one to many mapping:
+	Student has phone , To create this relationship you need to have a STUDENT, PHONE and STUDENT_PHONE table. 
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "STUDENT_PHONE", joinColumns = { @JoinColumn(name = "STUDENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "PHONE_ID") })
+	public Set<Phone> getStudentPhoneNumbers() {
+		return this.studentPhoneNumbers;
+	}
+   many yo many mapping:
+   Student enroll in courses.
+   To create this relationship you need to have a STUDENT, COURSE and STUDENT_COURSE table. 
+   @ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "STUDENT_COURSE", joinColumns = { @JoinColumn(name = "STUDENT_ID") }, inverseJoinColumns = { @JoinColumn(name = "COURSE_ID") })
+22. What is cascading ?
+   -- Cascading defines that whether changes to parent class should be child class object too.if we write cascade = “all” then all operations like insert, 
+      delete, update at parent object will be effected to child object also.
+23. How to use application server JNDI DataSource with Hibernate framework?
+ -- For web applications, it’s always best to allow servlet container to manage the connection pool. 
+ That’s why we define JNDI resource for DataSource and we can use it in the web application. It’s very easy to use in Hibernate, 
+ all we need is to remove all the database specific properties and use below property to provide the JNDI DataSource name.
+
+<property name="hibernate.connection.datasource">java:comp/env/jdbc/MyLocalDB</property>
+24. 	
+
+

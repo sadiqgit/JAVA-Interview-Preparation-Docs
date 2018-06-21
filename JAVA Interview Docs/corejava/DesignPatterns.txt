@@ -1,0 +1,66 @@
+-- What is design pattern?
+-- Design pattern are well describable solution for common problems in software application.
+-- How design patterns are characterized?
+	-- Creational
+	-- Structural
+	-- Behavioral
+-- Creational:
+	-- Creation of Singleton:
+	  -- Only one instance should be created for class.
+	  -- private constructor so that it cannot be instantiated from outside.
+	  -- private static instance variable of type class
+	  -- public static method in which return instance, In multithreading use this method as synchronized and use double
+	     check locking means check instance is null before and inside synchronized block, this method is visible to outside world.
+	  -- Using enum public enum EnumSingleton { INSTANCE; }
+    -- How to destory singleton?
+	  -- Using reflection as Constructor[] constructors=SigletonClass.class.getDeclaredConstructors();for(Constructor constructor : constructors )
+	     {constructor.setAccessible(true);SigletonClass instanceTwo=(SigletonClass)constructor.newInstance()} break; }
+	-- Prototype:
+	-- Prototype design pattern is used when we need to create multiple instances of class, then clone the already created instance , 
+	    without again creating instance with new operator.
+	-- It is implemented using clonable interface and overriding clone and calling super.clone() inside it. 
+	-- Real world example: If customer has opened account in bank by submitting all documents , again after sometime he needs to again open 
+	   account then we can clone existing account object instead of creating new and do modifications.
+	-- What happen if we clone singleton object?
+	-- If our singleton class does not implement clonable interface and override clone method , then it throws exception clone not supported.
+	-- If our singleton class is sub class of other class which has clone method then we need to override clone method and throw clone not supported exception.
+-- Factory pattern:
+	Factory pattern defines interface or abatract class to create object of sub classes and let the subclasses choose which object need to instatianated.
+	Example: valueOf() in wrapper classes like Integer, Boolean.
+-- Structural:
+ -- Adapter: Is used so that two unreleated interfaces work together.
+    Example : memory card reader which act as adapter between your computer and memory card.
+	JDK: Arrays#asList();
+ -- proxy: placeholder for another object to control access to it.
+    Example: Let’s say we have a class that can run some command on the system. Now if we are using it, its fine but if 
+	we want to give this program to a client application, it can have severe issues because client program can issue command to 
+	delete some system files or change some settings that you don’t want.
+    JDK :java.rmi.*
+ -- Flyweight Pattern:
+    Flyweight design pattern is used when we need to create a lot of Objects of a class. Since every object consumes memory space.
+	Example: String pool
+ -- Decorator: Decorator design pattern is used to modify the functionality of an object at runtime.
+    Example: All subclasses of java.io.InputStream, OutputStream, Reader and Writer have a constructor taking an instance of same type.
+    java.util.Collections, the checkedXXX(), synchronizedXXX() and unmodifiableXXX() methods.
+ -- Behavioral :
+ -- Iterator: Standard way to traverse through objects.
+   JDK : java.util.Iterator
+         java.util.Enumeration
+ -- Observor : used when one object need to notify about the state of another object.
+    Example : Spring MVC in which views are observers and models are subjects, when models are changed , those changes get notified to views.
+ -- Strategy:
+   Strategy pattern is used when we have multiple algorithm for a specific task and client decides the actual implementation to be used at runtime
+   Example : sorting and going to airport by bus or cab.
+ -- Interpeter:
+   -- is used to defines a grammatical representation for a language and provides an interpreter to deal with this grammar.
+     The best example of this pattern is java compiler that interprets the java source code into byte code that is understandable by JVM. 
+	 Google Translator is also an example of interpreter pattern where the input can be in any language and we can get 
+	 the output interpreted in another language.
+-- Temapalte method Pattern:
+    Template method defines the steps to execute an algorithm and it can provide default implementation that might be common for all 
+	or some of the subclasses.
+ -- Example: JDBC Tempalate
+   
+   
+  
+	  

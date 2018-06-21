@@ -1,0 +1,155 @@
+-- Exception hierarchy
+			Throwable
+		Error        Exception
+		           IOException    RuntimeExceptions
+                   (All checked)  (All Unchecked Exception)		
+--------------------------------------------------------------------------------------------------------
+-- What are the different types of exceptions in java?
+  - Two tpes of exceptions
+     -- Checked or un checked exceptions.
+---------------------------------------------------------------------------------------------------------
+- What is the difference between checked and unchecked exceptions in java?
+  -- Handling : Checked exceptions should be handled at compile time, otherwise it will complain compaliation error.
+  -- Hierarchy: Exceptions which are directly inherited with Exception class are called Checked Exceptions.
+                Exceptions which inherits RuntimeExceptions class are called unchecked Exceptions.
+------------------------------------------------------------------------------------------------------------
+- Why we need checked and unchecked exceptions as only runtime exceptions can handle all exceptions?
+ -- It's design decision in java. 
+ -- For example in previous languages like c++ most of the programmers forget to close file descriptors which
+    leads to file locking at OS level. Since Java is introduced after C++, designers of Java thought to ensure 
+	such mistakes are not allowed and resources opened are closed properly. To ensure this they introduced 
+	Checked Exception. If you see most of File IO related operation comes under IOException which is checked one.
+-------------------------------------------------------------------------------------------------------------------
+-- What is the diffrence between throw and throws in java?
+ -- Throw clause is used to throw an exception explicitly, where as throws clause is used to declare exceptions.
+  -- Throw clause is used inside mrthid, where as throws is used in method signature
+  -- Using throw clause we can throw only one exception at a time, where as using throws we can declare more 
+     than one exception in method signature.
+  -- If we see syntax wise than throw is followed by an instance variable and throws is followed by exception
+      class names.
+-------------------------------------------------------------------------------------------------------------------
+-- When will java.lang.outofmemory exception occurs?
+ -- Occurs mainly there is no space in memory in heap, when  we try to create object in heap.
+ -- Types of OutOfMemoryError in Java
+
+I have seen mainly two types of OutOfMemoryError in Java:
+
+1) The java.lang.OutOfMemoryError: Java heap space
+2) The java.lang.OutOfMemoryError: PermGen space
+The difference between "java.lang.OutOfMemoryError: Java heap space" and "java.lang.OutOfMemoryError: PermGen space"
+
+If you are familiar with different generations on the heap and How garbage collection works in java and aware
+ of new, old and permanent generation of heap space then you would have easily figured out this OutOfMemoryError 
+ in Java. Permanent generation of the heap is used to store String pool and various Metadata required by JVM 
+ related to Class, method and other java primitives.
+Since in most of JVM default size of Perm Space is around "64MB" you can easily run out of memory 
+if you have too many classes or a huge number of Strings in your project.
+export JVM_ARGS="-Xmx1024m -XX:MaxPermSize=256m"
+An easy way to solve OutOfMemoryError in java is to increase the maximum heap size 
+by using JVM options "-Xmx512M", this will immediately solve your OutOfMemoryError. This is my 
+preferred solution when I get OutOfMemoryError in Eclipse, Maven or ANT while building project 
+because based upon size of project you can easily run out of Memory.here is an example of increasing 
+maximum heap size of JVM, Also its better to keep -Xmx to -Xms ration either 1:1 or 1:1.5 if 
+you are setting heap size in your java application
+export JVM_ARGS="-Xms1024m -Xmx1024m"
+----------------------------------------------------------------------------------------------------------------------
+-- What/why exception chaning in java?
+  -- Exception chaining in java mainly used to preserve the orginal exception when it is propagated from 
+    multiple layers (from DAO layer to businees layer). This is very helpful for the debugging process 
+	when an exception is thrown, as the programmer can analyze the full stack trace of the exceptions.
+Two new constructors and two methods were added to Throwable class to support chained exception.
+Throwable( Throwable cause )
+Throwable( String str, Throwable cause )
+In the first form, the paramter cause specifies the actual cause of exception. In the second form, it allows us 
+to add an exception description in string form with the actual cause of exception.
+getCause() and initCause() are the two methods added to Throwable class.
+getCause() method returns the actual cause associated with current exception.
+initCause() set an underlying cause(exception) with invoking exception.
+-------------------------------------------------------------------------------------------------------------------
+-- What is wrong with following code in Java:
+
+public class SuperClass {  
+    public void start() throws IOException{
+        throw new IOException("Not able to open file");
+    }
+}
+
+public class SubClass extends SuperClass{  
+    public void start() throws Exception{
+        throw new Exception("Not able to start");
+    }
+}
+-- The subclass overriden method doesn't throw checked exception which is higher in hierarchy of super 
+  class method. Compile time error will occur.
+-------------------------------------------------------------------------------------------------------------------
+-- What is wrong with following Java Exception code:
+
+public static void start(){
+   System.out.println("Java Exception interivew question Answers for Programmers");
+}
+
+public static void main(String args[]) {
+   try{
+      start();
+   }catch(IOException ioe){
+      ioe.printStackTrace();
+   }
+}
+------------------------------------------------------------------------------------------------------------------
+-- Can we override a super class method which is throwing an unchecked exception with checked 
+exception in the sub class?
+No. If a super class method is throwing an unchecked exception, then it can be overridden 
+in the sub class with same exception or any other unchecked exceptions but can not be 
+overridden with checked exceptions.
+------------------------------------------------------------------------------------------------------------------
+-- What is Automatic resource management in java 7?
+ -- multi catch handling 
+ ----------------------------------------------------------------------------------------------------------------
+ -- Discuss which checked and unchecked exception can be thrown/declared by subclass method while
+ overriding superclass method in java?
+   -- If superclass method throws/declare unchecked/RuntimeException in java >
+overridden method of subclass can declare/throw any unchecked /RuntimeException (superclass or subclass), or
+overridden method of subclass cannot declare/throw any checked exception in java, or
+overridden method of subclass can declare/throw same exception in java, or
+overridden method of subclass may not declare/throw any exception in java.
+
+If superclass method throws/declare checked/compileTime exception in java >
+overridden method of subclass can declare/throw narrower (subclass of) checked exception, or
+overridden method of subclass cannot declare/throw broader (superclass of) checked exception, or
+overridden method of subclass can declare/throw any unchecked /RuntimeException, or
+overridden method of subclass can declare/throw same exception, or
+overridden method of subclass may not declare/throw any exception in java.
+
+If superclass method does not throw/declare any exception in java >
+overridden method of subclass can declare/throw any unchecked /RuntimeException , or
+overridden method of subclass cannot declare/throw any checked exception, or
+overridden method of subclass may not declare/throw any exception in java.
+--------------------------------------------------------------------------------------------------------------------
+What are the most important frequently occurring Exception and Errors which you faced in java?
+Answer. Most common and frequently occurring checked (compile time) and Errors in java >
+FileNotFoundException in java
+SQLException in java
+What is java.lang.InterruptedException in java
+when java.lang.ClassNotFoundException occurs in java
+
+Most common and frequently occurring unchecked (runtime) in java.
+What is java.lang.NullPointerException in java, when it occurs,how to handle, avoid and fix it
+NumberFormatException in java
+IndexOutOfBoundsException in java
+When java.lang.ArrayIndexOutOfBoundsException occurs in java
+When java.lang.StringIndexOutOfBoundsException occurs in java
+java.lang.ArithmeticException in java - Divide number by zero
+When dividing by zero does not throw ArithmeticException in java
+When java.lang.IllegalStateException occurs in java
+when java.lang.IllegalMonitorStateException is thrown in java
+Solve java.lang.UnsupportedOperationException in java
+
+Most common and frequently occurring Errors in java > 
+OutOfMemoryError in java
+When java.lang.StackOverflowError occurs in java
+Solve java.lang.ExceptionInInitializerError in java
+How to solve java.lang.NoClassDefFoundError in java
+--------------------------------------------------------------------------------------------------------
+
+  
+

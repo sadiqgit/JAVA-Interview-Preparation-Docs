@@ -1,0 +1,165 @@
+[Spring core]
+Autowire - Used to inject dependencies .
+ Types of autowire :
+  1. By Name
+For example, if a “customer” bean exposes an “address” property, Spring will find the “address” bean in current container and wire it automatically. 
+And if no matching found, just do nothing.
+
+ :<bean id="customer" class="com.mkyong.common.Customer" autowire="byName" />
+
+<bean id="address" class="com.mkyong.common.Address" >
+	<property name="fulladdress" value="Block A 888, CA" />
+</bean>
+  
+2. By type : 
+
+data type of a bean is compatible with the data type of other bean property, auto wire it.
+
+For example, a “person” bean exposes a property with data type of “ability” class, Spring will find the bean with same data type of class “ability” 
+and wire it automatically. And if no matching found, just do nothing.
+
+You can enable this feature via autowire="byType" like below :
+
+<!-- person has a property type of class "ability" -->
+<bean id="person" class="com.mkyong.common.Person" autowire="byType" />
+
+<bean id="invisible" class="com.mkyong.common.Ability" >
+	<property name="skill" value="Invisible" />
+</bean>
+
+By constructor :
+
+In Spring, “Autowiring by Constructor” is actually autowiring by Type in constructor argument.
+
+<bean id="developer" class="com.mkyong.common.Developer" autowire="constructor" />
+
+<bean id="language" class="com.mkyong.common.Language" >
+	<property name="name" value="Java" />
+</bean>
+
+@Qualifer :
+
+In Spring, @Qualifier means, which bean is qualify to autowired on a field. See following scenario 
+
+For example customer class has person autowired , but we have personA and personB of type person , spring container gets confused 
+whether autowire personA or personB and throw exception. In order to resolve we use qualifer("personA").
+
+Spring Annotations :
+
+@Service, @Controller , @Repository = {@Component + some more special functionality}
+
+That mean Service,Controller and Repository are functionally the same.
+
+The three annotations are used to separate "Layers" in your application,
+
+Controllers just do stuff like dispatching, forwarding, calling service methods etc.
+Service Hold business Logic, Calculations etc.
+Repository are the DAOs(Data Access Objects), they access the database directly.
+
+Annotate with @Component to indicate this is class is an auto scan component.
+
+--@ComponentScan("com.company") // search the com.company package for @component classes.
+
+-- @Configuration: bean definitions using @Bean  in java itself no need separate xml
+-- @Bean : used for declaring beans
+
+@Configuration
+public class AppConfig {
+    @Bean
+    public TransferService transferService() {
+        return new TransferServiceImpl();
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Difference between application context(ClassPathApplicationContext) and bean factory(XmlBeanFactory). 
+  -- Application context interface is built on top of the bean factory. 
+   -- Bean factory Supports
+      1. Bean instantiation/wiring
+   -- Application Context Supports:
+      1. Bean instantiation/wiring.
+      2. Automatic  BeanPostProcessor registration
+	  3. Automatic  BeanFactoryPostProcessor registration
+	  4. ApplicationEvent publication
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- What is BeanPostProcessor and BeanFactoryPostProcessor and difference between them?
+ -- BeanPostProcessor interface used when we want to execute custom logic before and after initialization method of bean is invoked in spring container.
+ -- BeanPostProcessor has two methods postProcessBeforeInitialization(Object bean, String beanName) 
+    and postProcessAfterInitialization(Object bean, String beanName) 
+  -- Example :
+    public class InstanceValidationBeanPostProcessor implements BeanPostProcessor {
+    private static Logger logger = Logger.getLogger(InstanceValidationBeanPostProcessor.class);
+   
+
+    public InstanceValidationBeanPostProcessor() {
+        logger.info("Created InstanceValidationBeanPostProcessor instance");
+    }
+
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName)
+            throws BeansException {
+        logger.info("postProcessBeforeInitialization method invoked");
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName)
+            throws BeansException {
+        logger.info("postProcessAfterInitialization method invoked");
+        
+    }
+ -- BeanPostProcessor interface is called when all bean definitions will have been loaded, but no beans
+   will have been instantiated yet. This allows for overriding or adding properties even to eager-initializing beans. This 
+   will let you have access to all the beans that you have defined in XML or that are annotated (scanned via component-scan).
+-- Spring includes a number of pre-existing bean factory post-processors, such as given below
+   PropertyResourceConfigurer and PropertyPlaceHolderConfigurer
+-- Difference : BeanPostProcessor implementations called when the spring container instantiates beans, where as BeanFactoryPostProcessor called
+    during startup of the Spring context after all bean definitions will have been loaded.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Spring life sycle:
+  1. Spring container loads all the bean definitions.
+  2. BeanFactoryPostProcessor called
+  3. Creates the bean instance.
+  4. Setter are called
+  5. Passes bean instance to postProcessBeforeInitialization() method
+  6. Call the initialization callback method(afterPropertiesSet).
+  7. Passes bean instance to postProcessAfterInitialization() method
+  8. Bean is ready to use.
+  9. When the container is shut down, calls the destruction call back method(destroy)
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Autowiring should be configured by <context:annotation-config /> or <bean class ="org.springframework.beans.factory.annotation.
+AutowiredAnnotationBeanPostProcessor"/>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+--  @Required annotation to mark member variables in beans that must be set.
+  <bean class=”o.s.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />
+-------------------------------------------------------------------------------------------------------
+-- Difference between setter and constructor injection?
+  -- if we use constructor injection then  all the dependencies must be set, where as in setter injection , all the dependencies may or 
+     may not be injected.
+ -- Using setter injection you can not guarantee that certain dependency is injected or not, which means you may have an object with incomplete dependency.
+     On other hand constructor Injection does not allow you to construct object, until your dependencies are ready.
+--------------------------------------------------------------------------------------------------------------------------------------------
+-- What are the different types of events in spring framework?
+  -- ContextRefreshedEvent :
+  -- ContextStartedEvent  :
+  -- ContextStoppedEvent  :
+  -- ContextClosedEvent :
+  -- RequestHandledEvent :
+------------------------------------------------------------------------------------------------------------------------------------------
+-- Name some of the design patterns used in Spring Framework?
+
+There are lots of different design patterns used, but there are a few obvious ones:
+
+Proxy – used heavily in AOP, and remoting.
+Singleton – beans defined in spring config files are singletons by default.
+Template method – used extensively to deal with boilerplate repeated code e.g. RestTemplate, JmsTemplate, JpaTemplate.
+Front Controller – Spring provides DispatcherServlet to ensure an incoming request gets dispatched to your controllers.
+View Helper – Spring has a number of custom JSP tags, and velocity macros, to assist in separating code from presentation in views.
+Dependency injection – Center to the whole BeanFactory / ApplicationContext concepts.
+Factory pattern – BeanFactory for creating instance of an object.
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+

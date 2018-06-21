@@ -1,0 +1,91 @@
+-- Steps to connect to database(oracle) through java.
+ 1. Load oracle jdbc driver : Class.forName("oracle.jdbc.driver.OracleDriver");
+ 2. Get connection from Driver Manager: DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:SID","USername","password
+------------------------------------------------------------------------------------------------------------------------------------
+-- Example of insert query through prepared statement.
+ -- String insertTableSQL = "INSERT INTO DBUSER"
+		+ "(USER_ID, USERNAME, CREATED_BY, CREATED_DATE) VALUES"
+		+ "(?,?,?,?)";
+PreparedStatement preparedStatement = dbConnection.prepareStatement(insertTableSQL);
+preparedStatement.setInt(1, 11);
+preparedStatement.setString(2, "mkyong");
+preparedStatement.setString(3, "system");
+preparedStatement.setTimestamp(4, getCurrentTimeStamp());
+// execute insert SQL stetement
+preparedStatement .executeUpdate();
+----------------------------------------------------------------------------------------------------------------------------------------------
+-- Example of select query through prepared statement.
+ -- String selectTableSQL = "SELEECT * FROM"
+		+ "DBUSER WHERE ID = 
+		+ "(?)";
+PreparedStatement preparedStatement = dbConnection.prepareStatement(selectTableSQL);
+preparedStatement.setInt(1, 11);
+// execute insert SQL stetement
+ResultSet rs = preparedStatement .executeQuery();
+while (rs.next()) {
+	String userid = rs.getString("USER_ID");
+	String username = rs.getString("USERNAME");
+}
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- Example of update query through prepared statement.
+  -- String updateTableSQL = "UPDATE"
+		+ "DBUSER SET ID = 11 WHERE ID = 
+		+ "(?)";
+PreparedStatement preparedStatement = dbConnection.prepareStatement(updateTableSQL);
+preparedStatement.setInt(1, 11);
+// execute insert SQL stetement
+preparedStatement .executeUpdate();
+----------------------------------------------------------------------------------------------------------------------------------------------
+-- Difference between statement and prepareStatement
+ --  Precompilation and DB-side caching of the SQL statement leads to overall faster execution and the ability to 
+   reuse the same SQL statement in batches.
+ -- Automatic prevention of SQL injection attacks by builtin escaping of quotes and other special characters.
+----------------------------------------------------------------------------------------------------------------------
+-- Difference between executeQuery , executeUpdate and execute 
+ -- executeQuery -- used for select statements which returns result set.
+ -- executeUpdate -- Used for insert, update and DELETE , it returns integer which represents the number of rows affected by the query.
+ -- execute - Can be used for above both satements, This method returns a boolean value. TRUE indicates that statement has returned a ResultSet 
+  object and FALSE indicates that statement has returned an int value or returned nothing.
+------------------------------------------------------------------------------------------------------------------------------------------------
+-- What is dirty read in database?
+ -- dirty read is a scenario occurs when one transaction modifying value and not commited or rollback and another transaction same time reads
+   the value , which may not be correct value.
+----------------------------------------------------------------------------------------------------------------------------------------------
+-- What is connection pooling ?
+ -- Connection pooling increases performance , as the client don't need to create new connection for every request, can reuse the connection 
+    from connection pool.
+--------------------------------------------------------------------------------------------------------------------------------------------
+-- What is the use of setFetchSize() and setMaxRows() methods in Statement?
+ -- FetchSize mainly represents that how many rows need to fetch for every DB trip. Let’s say we have a query that returns 100 rows and 
+ we have set fetchSize to 10, so in every database trip JDBC driver will fetch only 10 rows and hence there will be 10 trips to fetch all the rows.
+ -- setMaxRows represents that how many rows should be returned from query. Let’s say we have a query that returns 100 rows and 
+ we have set setMaxRows to 10, so  only 10 rows will be returned.
+ --------------------------------------------------------------------------------------------------------------------------------------------------
+ -- Batch Query Example
+ -- for(int i =0; i<10000;i++){
+				String query = "insert into Employee values ("+i+",'Name"+i+"')";
+				stmt.addBatch(query);
+				
+				//execute and commit batch of 1000 queries
+				if(i%1000 ==0) stmt.executeBatch();
+			}
+			//commit remaining queries in the batch
+			stmt.executeBatch();
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+-- What is datasource?
+ -- DataSource is achively configured in application server . If you want to get DB connection we will use DataSource.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- What are CLOB and BLOB data types?
+ -- BLOB binary large object used for storing binary large objects in DB loke images.
+  -- CLOB character large object used for storing large characters like xml string's in DB.
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- What is difference between java.util.Date and java.sql.Date?
+ -- java.util.Date contains information about the date and time whereas java.sql.Date contains information only about the date, 
+ it doesn’t have time information. So if you have to keep time information in the database, 
+ it is advisable to use Timestamp or DateTime fields.
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- For inserting timestamp in Jdbc use -
+new java.sql.Timestamp(new java.util.Date().getTime())
+--------------------------------------------------------------------------------------------------------------------------------------------
+ 
+ 

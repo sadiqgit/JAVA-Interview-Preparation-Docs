@@ -1,0 +1,169 @@
+-- Comparable vs comparator
+ -- Code Avalability :
+    If you access to the code of the  class then implement comparable.
+	If you don't have access to code of the class for example say class belong to third party 
+	then go for comparator.
+ --  Single Versus Multiple Sorting Criteria :
+     If we have only single criteria of sorting then go for comparable .
+	 if we have more number of sorting criteria then go for comparator.
+ -- More Number of classes Versus flexibilty
+    If we use comparable more number of extra classes not needed.
+	But use of comparator provides flexibility to add more number of sorting criteria in 
+	future without changing the class for which we are sorting.
+---------------------------------------------------------------------------------
+
+package corejava.compare;
+ 
+public class Employee implements Comparable<Employee> {
+    private int id = -1;
+    private String firstName = null;
+    private String lastName = null;
+    private int age = -1;
+ 
+    public Employee(int id, String fName, String lName, int age) {
+        this.id = id;
+        this.firstName = fName;
+        this.lastName = lName;
+        this.age = age;
+    }
+ 
+    @Override
+    public int compareTo(Employee o) {
+        return this.id - o.id;
+    }
+ 
+    @Override
+    public String toString() {
+        return "Employee : " + id + " - " + firstName + " - " + lastName
+        + " - " + age + "n";
+    }
+ 
+    public int getId() {
+        return id;
+    }
+ 
+    public void setId(int id) {
+        this.id = id;
+    }
+ 
+    // Other accessor methods
+}
+Default way to sort a list of employees, in our case, is by their id. Whatever, your default sorting order is, use in compare() method.
+
+In implemented compare() method, we have simply returned the difference in employee ids of two instances. Two equal employee ids will return zero, indicating same object.
+
+Lets test our compare() method.
+
+package corejava.compare;
+ 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+ 
+public class TestSorting {
+    public static void main(String[] args) {
+        Employee e1 = new Employee(1, "aTestName", "dLastName", 34);
+        Employee e2 = new Employee(2, "nTestName", "pLastName", 30);
+        Employee e3 = new Employee(3, "kTestName", "sLastName", 31);
+        Employee e4 = new Employee(4, "dTestName", "zLastName", 25);
+ 
+        List<Employee> employees = new ArrayList<Employee>();
+        employees.add(e2);
+        employees.add(e3);
+        employees.add(e1);
+        employees.add(e4);
+ 
+        // UnSorted List
+        System.out.println(employees);
+ 
+        Collections.sort(employees);
+        // Default Sorting by employee id
+        System.out.println(employees);
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+ -- First name sorter
+
+package corejava.compare;
+ 
+import java.util.Comparator;
+ 
+public class FirstNameSorter implements Comparator<Employee>{
+ 
+@Override
+public int compare(Employee o1, Employee o2) {
+return o1.getFirstName().compareTo(o2.getFirstName());
+}
+}
+Age sorter
+
+package corejava.compare;
+ 
+import java.util.Comparator;
+ 
+public class AgeSorter implements Comparator<Employee> {
+    @Override
+    public int compare(Employee o1, Employee o2) {
+        return o1.getAge() - o2.getAge();
+    }
+}
+loyee e1 = new Employee(1, "aTestName", "dLastName", 34);
+        Employee e2 = new Employee(2, "nTestName", "pLastName", 30);
+        Employee e3 = new Employee(3, "kTestName", "sLastName", 31);
+        Employee e4 = new Employee(4, "dTestName", "zLastName", 25);
+ 
+        List<Employee> employees = new ArrayList<Employee>();
+        employees.add(e2);
+        employees.add(e3);
+        employees.add(e1);
+        employees.add(e4);
+ 
+        // UnSorted List
+        System.out.println(employees);
+ 
+        Collections.sort(employees);
+        // Default Sorting by employee id
+        System.out.println(employees);
+ 
+        Collections.sort(employees, new FirstNameSorter());
+        // Sorted by firstName
+        System.out.println(employees);
+ 
+        Collections.sort(employees, new LastNameSorter());
+        // Sorted by lastName
+        System.out.println(employees);
+ 
+        Collections.sort(employees, new AgeSorter());
+        // Sorted by age
+        System.out.println(employees);
+    }
+}
+ 
+Output:
+ 
+Employee : 2 - nTestName - pLastName - 30
+, Employee : 3 - kTestName - sLastName - 31
+, Employee : 1 - aTestName - dLastName - 34
+, Employee : 4 - dTestName - zLastName - 25
+]
+[Employee : 1 - aTestName - dLastName - 34
+, Employee : 2 - nTestName - pLastName - 30
+, Employee : 3 - kTestName - sLastName - 31
+, Employee : 4 - dTestName - zLastName - 25
+]
+[Employee : 1 - aTestName - dLastName - 34
+, Employee : 4 - dTestName - zLastName - 25
+, Employee : 3 - kTestName - sLastName - 31
+, Employee : 2 - nTestName - pLastName - 30
+]
+[Employee : 1 - aTestName - dLastName - 34
+, Employee : 2 - nTestName - pLastName - 30
+, Employee : 3 - kTestName - sLastName - 31
+, Employee : 4 - dTestName - zLastName - 25
+]
+[Employee : 4 - dTestName - zLastName - 25
+, Employee : 2 - nTestName - pLastName - 30
+, Employee : 3 - kTestName - sLastName - 31
+, Employee : 1 - aTestName - dLastName - 34
+]

@@ -1,0 +1,109 @@
+-- Equals and hash code 
+-------------------------------------------------------------------------------------------------------------------------
+-- why equals method?
+  -- Equlas method is used to determine whether objects equals or not .
+--------------------------------------------------------------------------------------------------------------------------
+-- Why hashcode method?
+  -- Hashcode method is used to determine where to store objects( like bucket)
+--------------------------------------------------------------------------------------------------------------------------
+-- When equals method called?
+  -- Equlas method is called when we call contains or remove method on collection. Let's say we are checking string 123 is 
+     present in array list or not, then we use list.contains("123") then array list iterates all the element and execute
+	 "123".equals(element) to determine whether array list element equals to string "123".
+--------------------------------------------------------------------------------------------------------------------------
+-- When hashcode method called?
+  -- Hashcode methods of objects is used while inserting or retriveing elements in all hash-based collections 
+     like hashmap,hashmap and hashtable.
+  -- Let say we have hashmap with key as string and value as customobject person with fields
+    name and age.
+	 -- Now in map i have added map.add("person1", {"john",25}), map.add("person2", {"kenn",28}), map.add("person3", {"keen",30})
+	 -- while adding elements into map hashcode of key is calucalted and used to determine where to store object.
+--------------------------------------------------------------------------------------------------------------------------------
+-- We need to must override equals with hashcode?
+  -- if we don't override equals with hashcode method, our class won't work as excepted in hashcode collection classes like hasmap, 
+   hashtable, hash set. Because the contract will fail if two objects are equal then hashcode must be equal.
+----------------------------------------------------------------------------------------------------------------------------------
+-- Can two objects which are not equal can have same hash code? Yes.
+----------------------------------------------------------------------------------------------------------------------------------
+-- How Hash Map works in java?
+  -- HashMap works on hashing technique.when we insert key and value in hash map. It calucaltes hashcode for given key using hashcode()
+     method inorder to determine where to store object it means in which bucket, then it stores both key value pair as Map.Entry object
+	 inside bucket.
+---------------------------------------------------------------------------------------------------------------------------------------
+-- How does get() method of hashmap works, when two keys have same hashcode?.
+ -- When two keys have same hashcode then they will be stored in same bucket. when get method is called with key then it will 
+    call Keys.equal() method to get map entry for given key.
+--------------------------------------------------------------------------------------------------------------------------------------
+-- Can we use custom object as key in HashMap?
+ -- This is an extension of previous questions. Of course you can use any Object as key in Java HashMap provided it 
+ follows equals and hashCode contract and its hashCode should not vary once the object is inserted into Map. 
+ If the custom object is Immutable than this will be already taken care because you can not change it once created.
+ ----------------------------------------------------------------------------------------------------------------------------------------
+ How null key is handled in HashMap? Since equals() and hashCode() are used to store and retrieve values, how does it work in case of the null key?
+	--The null key is handled specially in HashMap, there are two separate methods for that putForNullKey(V value) and getForNullKey().
+----------------------------------------------------------------------------------------------------------------------------------------
+-- What is the difference in using instanceof and getClass() method for checking type inside equals?
+	--This question was asked multiple times, sometimes by looking at your equals() and hashCode implementation. Well, key difference
+ comes from the point that instanceof operator returns true, even if compared with subclass e.g. Subclass instanceof Superclass 
+ is true, but with getClass() it's false.
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- Why Comparable natural ordering needs to be consistent with equals method?
+	-- It is strongly recommended (though not required) that natural orderings be consistent with equals. This is so because 
+		sorted sets (and sorted maps) without explicit comparators behave "strangely"
+	-- The semantics of compareTo returning 0 is that the two objects are, well, equal. Having another definition of the same relation in the other
+	method can obviously result in many kinds of trouble, as documented in your quote as well: the typical algorithms in SortedSet implementations 
+	rely on compareTo, but the general contract of the Set interface specifies that it must not contain two objects which are equals.
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+By overriding equals() and hashCode() method we could use custom object as key in HashMap.
+
+ 1)  Check whether obj is null or not.
+
+    if(obj==null) //If obj is null, return without comparing obj & Employee class.
+
+
+2)  check whether  obj is instance of Employee class or not.
+
+  if(this.getClass()!=obj.getClass()) //identifies whether obj is instance of Employee class or not.
+
+ 3) Then, type cast obj into employee instance.
+  Employee emp=(Employee)obj;  //type cast obj into employee instance.
+
+
+ String nmae;
+ 
+    @Override
+public int hashCode()
+{
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    return result;
+}
+
+@Override
+public boolean equals(Object obj)
+{
+    if (this == obj)
+        return true;
+    if (obj == null)
+        return false;
+    if (getClass() != obj.getClass())
+        return false;
+    CompanyRole other = (CompanyRole) obj;
+    if (name == null)
+    {
+        if (other.name != null)
+            return false;
+    } else if (!name.equals(other.name))
+        return false;
+    return true;
+}
+
+	
+	The inconsistency of reports from compareTo and equals will result in just such a situation.
+ 
+  when they are used with elements (or keys) whose natural ordering is inconsistent with equals
+
+
+Read more: http://javarevisited.blogspot.com/2013/08/10-equals-and-hashcode-interview.html#ixzz4WtEPmVF3

@@ -1,0 +1,67 @@
+-- Difference between hashmap and hashtable?
+  -- Synchronization - Methods of hashtable are synchronized where as hashmap not
+  -- Thread safe - Methods of hashtable are thread safe where as hashmap not.
+  -- Null keys and values - Hashtable doesn't allows null keys and values where as hashmap allows one null key 
+     and any number of null values.
+  -- Itearting through values - Elements of hashmap are iterated through iterator, where as elements of hashtable
+     are iterated through enumerator.
+  -- Performance - Hashmap is much faster and uses less memory when compare to hashtable as hash table methods are synchronized.
+     Unsynchronized objects are more often better than synchronized object in single threaded envinornment.
+---------------------------------------------------------------------------------------------------------------------------------------
+-- What is  concurrent hashmap?
+  -- Concurrent hashmap provides concurrent version of standard hashmap.
+----------------------------------------------------------------------------------------------------------------------------------------
+-- when to use concurrent hashmap?
+  -- Let us take scenario when you have lot of reads and less number of writes in multithreaded envinornment then go for
+     concurrent hashmap because mostly concurrent hashmap doesn't get lock on read operations which increases performance.
+----------------------------------------------------------------------------------------------------------------------------------------
+- Difference between synchronized map and concurrent hashmap?
+  -- Object lock : synchronized map locks whole map object where as concurrent hashmap locks only portion i.e segment or bucket of hashmap.
+  -- read/write lock : synchronized map acquires lock  for every read and write opertaion, where as concurrent hashmap acquires lock for only 
+     write operation.
+  -- Null keys/values: concurrent hashmap doesn't allow null keys and null values, where as synchronizedMap allows one null key and any number of null values.
+  -- Performance : In synchronized map as locking is done for entire object performance is less when compare to concurrent hashmap.
+  -- concurrent modification exception: Synchronized hash map can throw concurrent modification exception, where as
+     concurrent hashmap iterator , where as concurrent hasmap doesn't throw concurrent modification exception.
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-- Is it mandatory to put iterator in synchronized map even though we are using synchronized hashmap? Yes. Iteration is not thread safe eventhough 
+    you are using synchronized map?
+	
+  -- Map m = Collections.synchronizedMap(new HashMap());
+	...
+	Set s = m.keySet();  // Needn't be in synchronized block
+	...
+	synchronized(m) {  // Synchronizing on m, not s!
+    Iterator i = s.iterator(); // Must be in synchronized block
+    while (i.hasNext())
+        foo(i.next());
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-- when to use synchronized map?
+ -- As concurrent hashmap doesn't allow null keys and null values, where as synchronizedMap allows one null key and any number of null values.
+----------------------------------------------------------------------------------------------------------------------------------------------
+-- // iterate
+
+		for (Map.Entry<Integer, List<Product>> entry : map.entrySet()) {
+
+			Integer key = entry.getKey();
+			List<Product> values = entry.getValue();
+			System.out.println("Key = " + key);
+			System.out.println("Values = " + values);
+
+			System.out.println("List of values mapped to key are " + map.get(1));
+
+		}
+
+		// iterate through iterator
+		Iterator<Map.Entry<Integer, List<Product>>> it = map.entrySet().iterator();
+
+		while (it.hasNext()) {
+			Map.Entry<Integer, List<Product>> entry = it.next();
+
+			System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+
+		}
+	}
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+  

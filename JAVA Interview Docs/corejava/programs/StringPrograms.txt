@@ -1,0 +1,179 @@
+-- <<need to update file with office desktop file>>
+-- Number of occurences of character in string?
+  -- int count = s.length() - s.replace("a","").length();
+-------------------------------------------------------------------------------------------------------------------------------
+-- Program to reverse string?
+  -- Convert string to character array as
+     char[] strArray = str.toCharArray();
+ -- for(i=strArray.length-1; i >=0; i++){
+    sysout(str[i]);
+ } 
+-----------------------------------------------------------------------------------------------------------------------------------
+-- Program to count number of occurences of character in string?
+ -- Convert string to character array as 
+    char[] strArray = str.toCharArray();
+ -- Iterate array and then check if character contains in map then put character as key and increment count by 1 with those character count as  value
+    if(map.containsKey(character){
+	  map.put(character,map.get(character) + 1);
+	} else {
+	  map.put(character, 1);
+	}
+-- Display map as sysout(map);
+-------------------------------------------------------------------------------------------------------------------------------------
+-- Program to remove whitespaces in string?
+  -- 1. Using str.replaceAll("\\s","");
+  -- 2. Without Replace All
+    -- convert string to character array
+	-- Iterate over character array and check condition that character is not space  and tab \t as
+	    if( (strArray[i] != ' ') && (strArray[i] != '\t') )   
+	-- If condition is success then append every character to string buffer.
+	   sb.append(strArray[i]);
+------------------------------------------------------------------------------------------------------------------------------------
+-- Program to check palindrome
+ String str="MADAM";
+String revstring="";
+ 
+for(int i=str.length()-1;i>=0;--i){
+revstring +=str.charAt(i);
+}
+ 
+System.out.println(revstring);
+ 
+if(revstring.equalsIgnoreCase(str)){
+System.out.println("The string is Palindrome");
+}
+else{
+System.out.println("Not Palindrome");
+}
+ 
+}
+-- -------------------------------------------------------------------------------------------------------------------------------------
+-- program to check two string are anagrams?
+  Two strings are called anagrams if they contain same set of characters but in different order. For example, “Dormitory – Dirty Room”, 
+  “keep – peek”,  “School Master – The Classroom” are some anagrams
+	-- Replace white spaces of two strings as str.repalceAll("\\s","");
+  -- return false  if length of string1 and string2 not equals as string1.length() != string2.length() 
+  -- Convert string1 and string2 to char array
+  -- Sort character array of string1 and string2 using Arrays.sort(string1);
+  -- Check equals on sorted array1 and array2 as Arrays.equals(array1,array2), if equals return true other false;
+--------------------------------------------------------------------------------------------------------------------------------------------
+-- How To Find Percentage Of Uppercase Letters, Lowercase Letters, Digits And Special Characters In String?
+ -- Convert into character array and loop over character array and check every character and increment counter
+   Character.isUpperCase(ch) , Character.isLowerCase(ch) , Character.isDigit(ch) else special character
+ -- calucalte oercentage by (counter of everytype *100)/str.length
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ -- How To Find All Permutations Of String In Java? 
+ <<Work on it reference java cocept of the day >>
+ 
+ ------------------------------------------------------------------------------------------------------------------------------------------
+-- Sort string in java
+ --using Api Arrays.sort(char Array);
+ -- Without Using API
+    -- First convert String into char array.
+	char temp;
+	-- for (int i = 0; i <chars.length; i++) {
+         for ( j = 0; j < chars.length; j++) {
+         if(chars[j]>chars[i]){
+             temp=chars[i];
+             chars[i]=chars[j];
+              chars[j]=temp;
+          }
+     }
+  }
+  
+-- Using Treemap also we can do
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- How to check string contains only digits
+Pattern p = Pattern.compile(".*[^0-9].*");
+Matcher m = p.matcher("1234");  
+boolean b = m.matches();  
+-----------------------------------------------------------------------------------------------------------------------
+-- Count number of vowels in string?
+ -- Convert string to caharcter Array
+ -- Iterate chracter array and in switch case if character is a,e,i,o,u then increement counter as 
+    for(char character : charArray ){
+	  switch(character){
+	  case 'a':
+	  case 'e':
+	  case 'i':
+	  case 'o':
+	  case 'u':
+	    count++;
+		break;  
+	  }
+	}
+-- dispaly count
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+-- How To Find First Repeated And Non-Repeated Character In A String?
+ -- -- Convert string to character array as 
+    char[] strArray = str.toCharArray();
+ -- Iterate array and then check if character contains in map then put character as key and increment count by 1 with those character count as  value
+    if(map.containsKey(character){
+	  map.put(character,map.get(character) + 1);
+	} else {
+	  map.put(character, 1);
+	}
+ - Iterate through character and check count of character in hashmap is 1 then first non repeatative
+   for (char c : strArray)
+        {
+            if (charCountMap.get(c) == 1)
+            {
+                System.out.println("First Non-Repeated Character In '"+inputString+"' is '"+c+"'");
+                 
+                break;
+            }
+        }
+- Iterate through character and check count of character in hashmap is greater than 1 then first repeatative
+ -- for (char c : strArray)
+        {
+            if (charCountMap.get(c) > 1)
+            {
+                System.out.println("First Repeated Character In '"+inputString+"' is '"+c+"'");
+                 
+                break;
+            }
+        }
+    }
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+ ---------------------------------------------------------------------------------------------------------------------------------------
+ -- An Example To Prove Strings Are Immutable :
+
+First, create one string object ‘s1’ using string literal “JAVA”.
+
+?
+1
+String s1 = "JAVA";
+Create one more string object ‘s2’ using the same string literal “JAVA”.
+
+?
+1
+String s2 = "JAVA";
+We have seen in the previous article that string objects created using string literal are stored in the String Constant Pool and any two objects 
+in the pool can’t have same content. Here s1 and s2 are created using same literal. Therefore, they will be pointing 
+to same object in the pool. Then s1 == s2 should return true.
+
+?
+1
+System.out.println(s1 == s2);       //Output : true
+Now, I want to make little modification to this object through ‘s1’ reference. I want to append “J2EE” at end of this string through ‘s1’. 
+That can be done like below,
+
+?
+1
+s1 =s1 + "J2EE";
+This statement appends “J2EE” to the object to which s1 is pointing and re-assigns reference of that object back to s1.
+
+Now, compare physical address of s1 and s2 using “==” operator. This time it will return false.
+
+?
+1
+System.out.println(s1 == s2);       //Output : false
+That means now both s1 and s2 are pointing to two different objects in the pool. Before modifications they are pointing to same object.
+ Once we tried to change the content of the object using ‘s1’, a new object is created in the pool with “JAVAJ2EE” as it’s content and
+ it’s reference is assigned to s1. If the strings are mutable, both s1 and s2 should point to same object even after modification. 
+ That never happened here. That proves the string objects are immutable in java.
+ ---------------------------------------------------------------------------------------------------------------
+ 

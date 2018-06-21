@@ -1,0 +1,18 @@
+The Animal is the abstract class and Duck/Pig/Cat are all classes that derive from that base class. Animals might provide a function called "Age" that adds 1 year of life to the animals.
+ It might also provide an abstract method called "IsDead" that, when called, will tell you if the animal has died. Since IsDead is abstract, each animal must implement it.
+ So, a Cat might decide it is dead after it reaches 14 years of age, but a Duck might decide it dies after 5 years of age.
+ The abstract class Animal provides the Age function to all classes that derive from it, but each of those classes has to implement IsDead on their own.
+
+
+Now, an interface is like an abstract class, except it does not contain any logic. Rather, it specifies an interface.
+So, there might be an interface called IFly. This might have the methods GoForward and GoDown. 
+Those methods would not actually contain any logic... each class that implements interface IFly would have to implement those GoForward and GoDown methods. 
+You could have classes Duck and Finch implement interface IFly. 
+Then, if you want to keep a list of instances that can fly, you just create a list that contains items of type IFly. 
+That way, you can add Ducks and Finches and any other instance of a class the implements IFly to the list.
+
+
+Interface cannot have constructor.
+
+Easy, an interface cannot have any instance fields so there is nothing to construct.
+

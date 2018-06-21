@@ -1,0 +1,41 @@
+-- How hashset internally works?
+  -- HashSet internally calls hashmap put method when add element into hashset. The element 
+     which we have added in hashset will be considered as key in put method of hasmap and value 
+	 can be considered as any dummy object. put method of hashmap retuns null if no key is present
+	 already or else it returns old key value.
+	 
+	  public boolean add(E e) {
+            return map.put(e, PRESENT)==null;
+       }
+--------------------------------------------------------------------------------------------------------------
+-- Difference between hashset and tree set
+ -- Unique : Hash set doesn't maintain any ordering of elements, where as tree set maintains natural ordering.
+ -- Null Values :HashSet allow null values where as tree set doesn't allow null values, if null value is inserted
+    it will throw Null Pointer Exception.
+ -- Performane: Hashset is much faster than tree set.
+ -- Internal Implementation : HashSet internally uses hashmap where as tree set uses navigable map.
+-------------------------------------------------------------------------------------------------------------
+-- What is / when to use emptySet or emptyMap?
+ --1)If the Map can be immutable:
+	Collections.emptyMap();
+	// or, in some cases:
+	Collections.<String, String>emptyMap();
+	You'll have to use the latter sometimes when the compiler cannot automatically figure out what 
+	kind of Map is needed (this is called type inference). For example, consider a method declared like this:
+		--public void foobar(Map<String, String> map){ ... }
+ -- When passing the empty Map directly to it, you have to be explicit about the type:
+	foobar(Collections.emptyMap());                 // doesn't compile
+	foobar(Collections.<String, String>emptyMap()); // works fine
+2) If you need to be able to modify the Map, then for example:
+new HashMap<String, String>();
+----------------------------------------------------------------------------------------------------------------
+-- HashMap is not thread Safe so we have ConcurrentHashMap(thread safe).
+   Why Java do not have ConcurrentHashSet class just like ConcurrentHashMap ,
+   as we know HashSet is also not thread  safe and internally use HashMap?
+  -- newSetFromMap method returns a set backed by hashmap , which is thread safe.
+  Set<Object> weakHashSet = Collections.newSetFromMap( new WeakHashMap<Object, Boolean>());
+	Parameters:
+	map - the backing map
+	Returns:
+	the set backed by the map
+-----------------------------------------------------------------------------------------------------------------

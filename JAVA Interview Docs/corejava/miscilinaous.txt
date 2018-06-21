@@ -1,0 +1,112 @@
+1. What is Externalization in Java?
+	In serialization, the Java Virtual Machine is totally responsible for the process of writing and reading objects. 
+	This is useful in most cases, as the programmers do not have to care about the underlying details of the serialization process. 
+	However, the default serialization does not protect sensitive information such as passwords and credentials, or what 
+	if the programmers want to secure some information during the serialization process?
+	Thus externalization comes to give the programmers full control in reading and writing objects during serialization.
+-----------------------------------------------------------------------------------------------------------------------------------------------
+2. How will you implement security in java?
+ -- By using Encaptulation, In Encaptulation we will provide security for data by avoiding direct access of class members and that members
+ are accessed by proper authenticationication and public setter and getter methods.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+3. How will you swap two numbers without using a temp
+ -- int a = 5; int b = 10; a = a + b; // i.e. a = 5 + 10 = 15; b = a - b; // i.e. b = 15 - 10 = 5;
+ a = a - b; // i.e. a = 15 - 5 = 10; Final Answer is a = 10 and b = 5.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+4.  What are the methods in object class?
+ -- equals , hashcode , wait , notify, notifyAll, to String .
+-------------------------------------------------------------------------------------------------------------------------------------------------- 
+5. Example of seralization ?
+	1. Class should implement serializable marker 
+	Interface.
+	2. Create file with fileoutputstream
+	FileOutputStream fos = new FileOutputStrea
+	m(file1.ser);
+	3. Declare object ouput stream
+	ObjectOutputStream os = new ObjectOutputStream(fos);
+	4. Write class object instance to file
+	os.writeObject(objectinstance)
+	5. Close all file descriptors.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+6. can static filed serialized?
+	-- No. Because static fields are connected to class not to object.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+7. Example of deseralization?
+	1. Class should implement serializable marker interface.
+	2. Declare file input stream 
+	FileInputStream fis = new FileInputStream(file1.ser);
+	3. Declare object output stream 
+	ObjectOutputStream os = new ObjectOutputStream(fis);
+	4. Declare object of class which needs to be serialized as 
+	Studentclass sc = null;
+	5. Read object from file and map to student object as
+	sc =(Studentclass)os.readObject();
+--------------------------------------------------------------------------------------------------------------------------------------------------
+8. what is Executor framework?
+	-- Executor framework in java used to run runnable objects without creating new threads,
+	Mostly by reusing existing threads.
+	Example: ThreadPoolExecutor 
+	-- Thread Pool- is a pool of threads, threads in thread pool can be reused.
+	-- How to create ThreadPoolExecutor?
+	-- Executor framework provides static utility class called Executors in which we have several static factory methods to create thread pool 
+	Example : ThreadPoolExecutor
+	ExecutorService es = Executors.newCachedThreadPool();
+--------------------------------------------------------------------------------------------------------------------------------------------------
+9. why generics in java?
+	-- Generics are used for type safety in java, for example if we define list with integers then only integer elements are added in list and retrieved.
+	If generics are not used then list can take integer or string or any type of elements. While getting the elements we need to
+	 typecast to type of element , in this case there may possible we get ClassCastException.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+10. what are the new features of java8?
+	-- Functional interfaces and Lambda expressions
+	-- interface with default and static methods.
+	-- Java stream Api for bulk data operations on collections 
+	-- For each() method in iterable interface 
+--------------------------------------------------------------------------------------------------------------------------------------------------
+11. How can we access to private method and private fields in java ? 
+ -- Using reflection. First create object of that class as Dummy d = new Dummy();
+ -- call getDeclaredMethod on the Dummy class which return Method class of reflection as
+   Method m = Dummy.class.getDeclaredMethod("methodname");
+ -- Then m.setAccessible(true);
+ -- Invoke method with object created for dummy class using m.invoke(d);
+ -- Accessing private fields
+ -- call getDeclaredField method on the dummy class which returns Field class of reflection as 
+  Field f = Dummy.class.get DeclaredField("fieldname);
+ -- Then f. setAccessible(true);
+  -- call getmethod on field object of reflection class with dummy class object as
+   Sysout( f.get(d) );
+--------------------------------------------------------------------------------------------------------------------------------------------------
+12 . How to create immutable class in java?
+   -- Mark class as final so that it cannot be overriden.
+   -- Declare fields as private final ( If we have mutable fields return new instance 
+   Example: return new Date(mutableField.getTime()) 
+       in getter method.   
+   -- No setters only getters.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+13. Why we need immutable objects?
+  -- Immutable objects are thread safe .
+  -- Immutable objects are good Map keys and Set elements, since these typically do not change once created.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+14. How to create thread safe sigleton class?
+ -- Using ENUM 
+ public enum SingletonDemo{
+   INSTANCE;
+ }
+ SingletonDemo s1 = SingletonDemo.INSTANCE;
+ SingletonDemo s2 = SingletonDemo.INSTANCE;
+ public void doSOmething(EnumSingleton instance) {
+		System.out.println("Hashcode of passed instance is : " + instance.hashCode());
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------	
+15. JVM architecture?
+  -- 3 component
+    1. Class loader - Loads .class file of your application and some of the java releated .class files
+	2. Runtime data area -  Mainly Stack, Heap
+	3. Execution Engine - Executes instructions (interpeter)
+-- Sort an array containing only 0,1,and 2 such that all zeroes ones and twos come together.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+-- Write a java code to find the second minimum element in an array using single loop.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+ 

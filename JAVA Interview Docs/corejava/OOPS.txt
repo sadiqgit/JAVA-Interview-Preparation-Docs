@@ -1,0 +1,31 @@
+1. What is polymorphism in java?
+  -- Polymorphism means many forms. 
+  -- Example : method overloading - comple time polymorphism
+               method overriding - runtime polymorphism
+  -- Ability of super class reference can hold subclasses objects.
+2. What is Encapsulation?
+   -- Is wrapping or binding instance variables and methods that operates on variables into single unit.
+   -- Example : Class
+   Why? It prevents direct access to variables from outside worlds , which can be accessed by setters and getters.
+   
+3. What is abstraction?
+   -- Means hide certain details and show essential features of the object. 
+   -- Example : ATM
+   Why? You do abstraction when deciding what to implement.
+4. Real world Examples of abstraction and Encapsulation?
+   -- Encapsulation binds together the data and functions that manipulate the data, keeping it safe from interference and misuse.
+   -- Real World Example: Every time you log into your email account( GMail, Yahoo, Hotmail or official mail), you have a whole 
+		lot of processes taking place in the backend, that you have no control over. So your password, 
+		would probably be retrieved in an encyrpted form, verified and only then you are given access. You do 
+		not have any control, over how the password is verified, and this keeps it safe from misuse.
+  -- Abstraction is a process of hiding the implementation from the user, only the functionality is exposed here.
+	  So you are aware only of what the application does, not how it does it.
+  -- Real World Example: When you log into your email, compose and send a mail. Again there is a whole lot of background processing involved, 
+     verifying the recipient, sending request to the email server, sending your email. Here you are only interested in 
+	 composing and clicking on the send button. What really happens when you click on the send button, is hidden from you.
+5. Abstraction vs Encapsulation
+  -- You do abstraction when deciding what to implement. You do encapsulation when hiding something that you have implemented.
+6. What is Inheritance ?
+ -- Subclasses inherits properties and methods of super class.
+
+   
