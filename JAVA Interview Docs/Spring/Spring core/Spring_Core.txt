@@ -1,11 +1,11 @@
 [Spring core]
 Autowire - Used to inject dependencies .
  Types of autowire :
-  1. By Name
+1. By Name
 For example, if a “customer” bean exposes an “address” property, Spring will find the “address” bean in current container and wire it automatically. 
 And if no matching found, just do nothing.
 
- :<bean id="customer" class="com.mkyong.common.Customer" autowire="byName" />
+<bean id="customer" class="com.mkyong.common.Customer" autowire="byName" />
 
 <bean id="address" class="com.mkyong.common.Address" >
 	<property name="fulladdress" value="Block A 888, CA" />

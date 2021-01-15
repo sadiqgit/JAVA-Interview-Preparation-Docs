@@ -126,7 +126,7 @@ operation on a shared resource, where multiple threads are waiting for the opera
 to complete before accessing the resource,to wake up all waiting threads at the same time.
 -----------------------------------------------------------------------------------------------------------------
 -- Why wait, notify and notify all methods are not in thread class?
-  -- wait , notify and notifyAll opearte at lock level, and in java Java provides lock at object level 
+  -- wait , notify and notifyAll opearte at lock level, and in java provides lock at object level 
   not at thread level.
 ------------------------------------------------------------------------------------------------------------------
 -- What is thread local variable?
